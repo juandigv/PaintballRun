@@ -36,15 +36,14 @@ public class PaintBallRunController {
 	private BanderaEnemiga bandera;
 	private Bala[] balaCancha;
 	private Muro[] muroCancha;
-	
 
 	private Laberinto miLaberinto;
 	private boolean unlimited = false;
 	private boolean muro = true;
 
 	public PaintBallRunController() {
-		balaCancha= new Bala[5];
-		muroCancha = new Muro[8];
+		balaCancha = new Bala[5];
+		muroCancha = new Muro[1];
 	}
 
 	@FXML
@@ -85,12 +84,12 @@ public class PaintBallRunController {
 		if (unlimited) {
 			modeButton.setText("5 RONDAS");
 			miTimer.setRondas(5);
-			
+
 		} else {
 			modeButton.setText("MODO INFINITO");
 			miTimer.setRondas(999);
 		}
-		unlimited=!unlimited;
+		unlimited = !unlimited;
 	}
 
 	@FXML
@@ -113,28 +112,28 @@ public class PaintBallRunController {
 		case KP_UP:
 		case I:
 			if (y >= 20)
-				 //if (murolados())
-				y -= 5;
+				if (muroarriba())
+					y -= 5;
 			break;
 		case DOWN:
 		case KP_DOWN:
 		case K:
 			if (y <= 480)
-			//	 if (murolados())
+				// if (murolados())
 				y += 5;
 			break;
 		case LEFT:
 		case KP_LEFT:
 		case J:
 			if (x >= 20)
-				 if (murofrente())
+				// if (murofrente())
 				x -= 5;
 			break;
 		case RIGHT:
 		case KP_RIGHT:
 		case L:
 			if (x < 430)
-				 if (murofrente())
+				// if (murofrente())
 				x += 5;
 			break;
 		default:
@@ -142,34 +141,47 @@ public class PaintBallRunController {
 			break;
 		}
 
-		System.out.println(murofrente()+"aaa"+murolados());
+		// System.out.println(muroarriba() + "aaa");
 		key.consume();
 
 		miJugador.setCenterX(x);
 		miJugador.setCenterY(y);
 	}
 
-	public boolean murofrente() {
+	public boolean muroarriba() {
+		double x = miJugador.getCenterX();
+		double y = miJugador.getCenterY();
 
 		for (int i = 0; i < muroCancha.length; i++) {
-			long distanciaX = Math.abs(Math.round(miJugador.getCenterX() - (muroCancha[i].getX() + 20)));
-			long distanciaY = Math.abs(Math.round(miJugador.getCenterY() - (muroCancha[i].getY() + 20)));
-				muro = true;
-			if (distanciaX < 35 && distanciaY < 35) {
+			muro = true;
+			System.out.println(i + ": " + (x > (muroCancha[i].getX() + 20)) + " and "
+					+ (y > (muroCancha[i].getY() + 55)) + " and " + (x < muroCancha[i].getX()));
+			if (x > (muroCancha[i].getX() + 35) && y < (muroCancha[i].getY() + 55)) {
+				muro = false;
+				break;
+			} else if (x < muroCancha[i].getX()-15 && y < (muroCancha[i].getY() + 55)) {
 				muro = false;
 				break;
 			}
-			
+
+			/*
+			 * long distanciaX = Math.abs(Math.round(miJugador.getCenterX() -
+			 * (muroCancha[i].getX() + 20))); long distanciaY =
+			 * Math.abs(Math.round(miJugador.getCenterY() - (muroCancha[i].getY() + 20)));
+			 * muro = true; if (distanciaX < 35 && distanciaY < 35) { muro = false; break; }
+			 */
+
 		}
 		return muro;
+
 	}
-	
+
 	public boolean murolados() {
 
 		for (int i = 0; i < muroCancha.length; i++) {
 			long distanciaX = Math.abs(Math.round(miJugador.getCenterX() - (muroCancha[i].getX() + 20)));
 			long distanciaY = Math.abs(Math.round(miJugador.getCenterY() - (muroCancha[i].getY() + 20)));
-				muro = false;
+			muro = false;
 			if (distanciaX < 35 && distanciaY < 35) {
 				muro = true;
 				break;
