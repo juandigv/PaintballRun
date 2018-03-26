@@ -11,15 +11,14 @@ public class Jugador extends Circle {
 		super();
 		r = new Random();
 
-		this.setCenterX(r.nextInt(380) + 30);
+		this.setCenterX(((r.nextInt(38) + 3) * 10));
 		this.setCenterY(475);
 		this.setRadius(15);
 
 	}
 
 	public void respawn() {
-			this.setCenterX(r.nextInt(380) + 30);
-			this.setCenterY(475);
-		}
+		this.setCenterX((r.nextInt(38) + 3) * 10);
+		this.setCenterY(475);
 	}
-
+}

@@ -99,7 +99,7 @@ public class AnimationTimerBala extends AnimationTimer {
 				misEnemigos.respawn();
 				miLaberinto.respawn();
 			} else if (vidas > 0) {
-				//misEnemigos.disparar();
+	//			misEnemigos.disparar();
 				misEnemigos.angulotiempo(miJugador.getCenterX(), miJugador.getCenterY());
 				if (impactoJugadorBala()) {
 					vidas--;

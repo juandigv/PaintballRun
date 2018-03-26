@@ -132,7 +132,7 @@ public class PaintBallRunController {
 		case RIGHT:
 		case KP_RIGHT:
 		case L:
-			if (x < 430)
+			if (x <= 430)
 				if (muroderecha())
 				x += 5;
 			break;
@@ -140,7 +140,6 @@ public class PaintBallRunController {
 			System.out.println("KeyMoveHnd:" + key.getCode());
 			break;
 		}
-
 		key.consume();
 
 		miJugador.setCenterX(x);
@@ -151,47 +150,44 @@ public class PaintBallRunController {
 		for (int i = 0; i < muroCancha.length; i++) {
 			muro = true;
 			long distanciaX = Math.abs(Math.round(miJugador.getCenterX() - (muroCancha[i].getX() + 20)));
-			long distanciaY = Math.abs(Math.round(miJugador.getCenterY() - (muroCancha[i].getY())));
-			if (distanciaX < 30 && distanciaY < 55) {
+			long distanciaY = Math.abs(Math.round((miJugador.getCenterY()-15) - (muroCancha[i].getY()+40)));
+			if (distanciaX < 35 && distanciaY == 0) {
 				muro = false;
 				break;
 			}
 		}
 		return muro;
 	}
-
-	public boolean muroderecha() {
-		for (int i = 0; i < muroCancha.length; i++) {
-			muro = true;
-			long distanciaX = Math.abs(Math.round((muroCancha[i].getX())-miJugador.getCenterX() ));
-			long distanciaY = Math.abs(Math.round((muroCancha[i].getY() +20)-miJugador.getCenterY() ));
-			if (distanciaX < 15 && distanciaY < 30) {
-				muro = false;
-				break;
-			}
-		}
-		return muro;
-	}
-
 	public boolean muroabajo() {
 		for (int i = 0; i < muroCancha.length; i++) {
 			muro = true;
-			long distanciaX = Math.abs(Math.round((muroCancha[i].getX() + 20)-miJugador.getCenterX() ));
-			long distanciaY = Math.abs(Math.round((muroCancha[i].getY())-miJugador.getCenterY() ));
-			if (distanciaX < 30 && distanciaY < 15) {
+			long distanciaX = Math.abs(Math.round((muroCancha[i].getX() + 20)-miJugador.getCenterX()));
+			long distanciaY = Math.abs(Math.round((muroCancha[i].getY())-(miJugador.getCenterY()+15) ));
+			if (distanciaX < 35 && distanciaY == 0) {
 				muro = false;
 				break;
 			}
 		}
 		return muro;
 	}	
-	
+	public boolean muroderecha() {
+		for (int i = 0; i < muroCancha.length; i++) {
+			muro = true;
+			long distanciaX = Math.abs(Math.round((miJugador.getCenterX() +15)-(muroCancha[i].getX()) ));
+			long distanciaY = Math.abs(Math.round((muroCancha[i].getY() +20)-miJugador.getCenterY() ));
+			if (distanciaX == 0 && distanciaY < 35) {
+				muro = false;
+				break;
+			}
+		}
+		return muro;
+	}
 	public boolean muroizquierda() {
 		for (int i = 0; i < muroCancha.length; i++) {
 			muro = true;
-			long distanciaX = Math.abs(Math.round(miJugador.getCenterX() - (muroCancha[i].getX())));
+			long distanciaX = Math.abs(Math.round((miJugador.getCenterX()-15) - (muroCancha[i].getX()+40)));
 			long distanciaY = Math.abs(Math.round(miJugador.getCenterY() - (muroCancha[i].getY()+20)));
-			if (distanciaX < 55 && distanciaY < 30) {
+			if (distanciaX == 0 && distanciaY < 35) {
 				muro = false;
 				break;
 			}
