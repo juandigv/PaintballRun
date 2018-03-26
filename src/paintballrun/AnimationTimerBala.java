@@ -24,17 +24,18 @@ public class AnimationTimerBala extends AnimationTimer {
 	private Laberinto miLaberinto;
 	private Label roundLabel;
 	private Label lifesLabel;
+	private boolean ingame = true;
 
 	public AnimationTimerBala(EquipoEnemigo misEnemigos, Jugador miJugador, BanderaEnemiga miBandera,
-			Laberinto miLaberinto, Bala[] balaCancha, Pane paneGameOver, Pane paneVictoria,
-			Label roundLabel, Label lifesLabel) throws MalformedURLException {
+			Laberinto miLaberinto, Bala[] balaCancha, Pane paneGameOver, Pane paneVictoria, Label roundLabel,
+			Label lifesLabel) throws MalformedURLException {
 		this.miBandera = miBandera;
 		this.misEnemigos = misEnemigos;
 		this.miJugador = miJugador;
 		this.balaCancha = balaCancha;
 		this.miLaberinto = miLaberinto;
-		this.roundLabel=roundLabel;
-		this.lifesLabel=lifesLabel;
+		this.roundLabel = roundLabel;
+		this.lifesLabel = lifesLabel;
 		this.paneGameOver = paneGameOver;
 		this.paneGameOver.setVisible(false);
 		this.paneVictoria = paneVictoria;
@@ -66,16 +67,17 @@ public class AnimationTimerBala extends AnimationTimer {
 		this.rondas = rondas;
 		reiniciar();
 	}
-	
+
 	public void reiniciar() {
+		ingame = true;
 		vidas = 3;
 		nivelsuperado = 0;
 		miBandera.respawn();
 		miJugador.respawn();
 		misEnemigos.respawn();
 		miLaberinto.respawn();
-		roundLabel.setText(""+(nivelsuperado+1));
-		lifesLabel.setText("  x"+vidas);
+		roundLabel.setText("" + (nivelsuperado + 1));
+		lifesLabel.setText("  x" + vidas);
 		mediaDead.stop();
 		mediaPlayerA.stop();
 		mediaPlayerWin.stop();
@@ -83,32 +85,33 @@ public class AnimationTimerBala extends AnimationTimer {
 		paneGameOver.setVisible(false);
 		paneVictoria.setVisible(false);
 	}
-	
+
 	@Override
 	public void handle(long arg0) {
 		if (nivelsuperado < rondas) {
-			roundLabel.setText(""+(nivelsuperado+1));
+			roundLabel.setText("" + (nivelsuperado + 1));
 			if (superadoJugador()) {
-			
+
 				nivelsuperado++;
-				System.out.println("nivel: "+nivelsuperado);
+				System.out.println("nivel: " + nivelsuperado);
 				miBandera.respawn();
 				miJugador.respawn();
 				misEnemigos.respawn();
 				miLaberinto.respawn();
 			} else if (vidas > 0) {
-			 //   misEnemigos.disparar();
+				//misEnemigos.disparar();
 				misEnemigos.angulotiempo(miJugador.getCenterX(), miJugador.getCenterY());
 				if (impactoJugadorBala()) {
 					vidas--;
-					lifesLabel.setText("  x"+vidas);
+					lifesLabel.setText("  x" + vidas);
 					miJugador.respawn();
 				}
 			} else {
-				mediaPlayerA.stop();
-				mediaDead.play();
 				paneGameOver.toFront();
 				paneGameOver.setVisible(true);
+				mediaPlayerA.stop();
+				mediaDead.play();
+				ingame=false;
 			}
 		} else {
 			mediaPlayerWin.play();
@@ -140,14 +143,15 @@ public class AnimationTimerBala extends AnimationTimer {
 		long distanciaX;
 		long distanciaY;
 		boolean superado = false;
+		if (ingame) {
 
-		for (int i = 0; i < balaCancha.length; i++) {
-			distanciaX = Math.abs(Math.round(miBandera.getCenterX() - miJugador.getCenterX()));
-			distanciaY = Math.abs(Math.round(miBandera.getCenterY() - miJugador.getCenterY()));
-
-			if (distanciaX < 25 && distanciaY < 25) {
-				System.out.println("Player hit");
-				superado = true;
+			for (int i = 0; i < balaCancha.length; i++) {
+				distanciaX = Math.abs(Math.round(miBandera.getCenterX() - miJugador.getCenterX()));
+				distanciaY = Math.abs(Math.round(miBandera.getCenterY() - miJugador.getCenterY()));
+				if (distanciaX < 25 && distanciaY < 25) {
+					System.out.println("Player hit");
+					superado = true;
+				}
 			}
 		}
 		return superado;
